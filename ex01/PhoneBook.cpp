@@ -6,7 +6,7 @@
 /*   By: timo <timo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 12:40:09 by timo              #+#    #+#             */
-/*   Updated: 2024/09/10 17:49:42 by timo             ###   ########.fr       */
+/*   Updated: 2024/09/11 00:34:55 by timo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,7 @@ void PhoneBook::search()
 {
 	int 		cmd;
 	int			i;
-	int			end;
 
-	end = 0;
 	for (i = 0; this->contacts[i].empty != 0 && i < 8; i++)
 	{
 		std::cout << "\033[33m" << std::string(45, '-') << '\n' << '|' <<
@@ -59,20 +57,26 @@ void PhoneBook::search()
 	}
 	std::cout << "\033[34m" << "input index of Contact for full information:" << "\033[0m" << std::endl;
 	std::cin >> cmd;
-	if (cmd <= i && cmd > 0)
-		return(this->display_full(cmd - 1));
-	while (end != 1)
+	while (std::cin.fail() || cmd > i || cmd < 0)
 	{
-		std::cout << "\033[34m" << "index is out of range. Enter a correct index or -1 for ending the search:" << "\033[0m" << std::endl;
-		std::cin >> cmd;
-		if (cmd == -1)
+		if (std::cin.fail())
 		{
-			std::cout << "\033[34m" << "ended search" << "\033[0m" << std::endl;
-			return ;
+			std::cin.clear();
+			std::cin.ignore(100, '\n');
+			std::cout << "\033[34m" << "incorrect input, please input a digit" << "\033[0m" << std::endl;
 		}
-		if (cmd <= i && cmd > 0)
-			return(this->display_full(cmd - 1));
+		else
+		{
+			std::cout << "\033[34m" << "index is out of range. Enter a correct index or -1 for ending the search:" << "\033[0m" << std::endl;
+			if (cmd == -1)
+			{
+				std::cout << "\033[34m" << "ended search" << "\033[0m" << std::endl;
+				return ;
+			}
+		}
+		std::cin >> cmd;
 	}
+	return(this->display_full(cmd - 1));
 }
 
 void PhoneBook::display_full(int ind) const
