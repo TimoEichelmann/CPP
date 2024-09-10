@@ -6,7 +6,7 @@
 /*   By: timo <timo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 12:24:06 by timo              #+#    #+#             */
-/*   Updated: 2024/09/10 17:34:06 by timo             ###   ########.fr       */
+/*   Updated: 2024/09/11 00:49:43 by timo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ Contact::~Contact(void)
 	// std::cout << "deleted" << std::endl;
 }
 
-void Contact::add_info(void)
+void Contact::add_info()
 {
 	std::cin.ignore(1,'\n');
 	while (this->f_name == "")
@@ -74,4 +74,13 @@ std::string Contact::get_value(int num) const
 	if (num == 5)
 		return (this->secret);
 	return (NULL);
+}
+
+void Contact::clear_info()
+{
+	this->secret = "";
+	this->ph_num = "";
+	this->n_name = "";
+	this->l_name = "";
+	this->f_name = "";
 }

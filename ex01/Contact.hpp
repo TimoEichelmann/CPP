@@ -10,6 +10,7 @@ class Contact {
 		Contact(void);
 		void		add_info(void);
 		std::string	get_value(int num) const;
+		void		clear_info(void);
 		~Contact(void);
 	private:
 		std::string f_name;

@@ -6,7 +6,7 @@
 /*   By: timo <timo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 12:40:09 by timo              #+#    #+#             */
-/*   Updated: 2024/09/11 00:34:55 by timo             ###   ########.fr       */
+/*   Updated: 2024/09/11 01:25:24 by timo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,16 +40,18 @@ void PhoneBook::search()
 {
 	int 		cmd;
 	int			i;
+	int			j = 0;
 
-	for (i = 0; this->contacts[i].empty != 0 && i < 8; i++)
+	std::cout << "\033[33m" << std::string(45, '-') << "\033[0m" << std::endl;
+	for (i = 0; i < 2 && this->contacts[i].empty != 0; i++)
 	{
-		std::cout << "\033[33m" << std::string(45, '-') << '\n' << '|' <<
+		std::cout << "\033[33m" << '|' <<
 			std::setw(10) << i + 1 << '|' <<
 			std::setw(10) << this->truncate(this->contacts[i].get_value(1)) << '|' <<
 			std::setw(10) << this->truncate(this->contacts[i].get_value(2)) << '|' <<
-			std::setw(10) << this->truncate(this->contacts[i].get_value(3)) << '|' << 
-			'\n' << std::string(45, '-') << '\n' << "\033[0m" << std::endl;
+			std::setw(10) << this->truncate(this->contacts[i].get_value(3)) << '|' <<  "\033[0m" << std::endl;
 	}
+	std::cout << "\033[33m" << std::string(45, '-') << "\033[0m" << std::endl;
 	if (i == 0)
 	{
 		std::cout << "\033[34m" << "phonebook is still empty, add an entry first" << "\033[0m" << std::endl;
@@ -63,18 +65,19 @@ void PhoneBook::search()
 		{
 			std::cin.clear();
 			std::cin.ignore(100, '\n');
-			std::cout << "\033[34m" << "incorrect input, please input a digit" << "\033[0m" << std::endl;
+			std::cout << "\033[31m" << "incorrect input, please input a digit or -1 to end the search" << "\033[0m" << std::endl;
 		}
 		else
 		{
-			std::cout << "\033[34m" << "index is out of range. Enter a correct index or -1 for ending the search:" << "\033[0m" << std::endl;
-			if (cmd == -1)
+			std::cout << "\033[31m" << "index is out of range. Enter a correct index or -1 for ending the search:" << "\033[0m" << std::endl;
+			if (cmd == -1 && j != 0)
 			{
 				std::cout << "\033[34m" << "ended search" << "\033[0m" << std::endl;
 				return ;
 			}
 		}
 		std::cin >> cmd;
+		j++;
 	}
 	return(this->display_full(cmd - 1));
 }
@@ -91,8 +94,17 @@ void PhoneBook::display_full(int ind) const
 void PhoneBook::add_contact()
 {
 	int i;
-	for (i = 0; this->contacts[i].empty != 0 && i < 8; i++);
-	if (i == 8)
-		i = 0;
+	
+	for (i = 0; i < 2 && this->contacts[i].empty != 0; i++);
+	if (i == 2)
+	{
+		static int j = 0;
+		this->contacts[j].clear_info();
+		this->contacts[j].add_info();
+		j++;
+		if (j == 2)
+			j = 0;
+		return ;
+	}
 	this->contacts[i].add_info();
 }
